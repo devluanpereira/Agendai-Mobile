@@ -1,15 +1,14 @@
-import { Alert, Image, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Image, SafeAreaView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import icon from "../../constants/icon";
 import { styles } from "./account.style";
-import Button from "../../components/button/button";
 import { useState } from "react";
 import api from "../../constants/api";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 function Account(props) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false); // Estado para carregamento
 
     // Função para executar o registro
     async function ExecuteAccount() {
@@ -25,9 +24,6 @@ function Account(props) {
             Alert.alert("Por favor, insira um e-mail válido.");
             return;
         }
-
-        // Inicia o carregamento
-        setLoading(true);
 
         try {
             // Chamada à API para registrar o usuário
@@ -48,66 +44,78 @@ function Account(props) {
                 Alert.alert(error.response.data.error);
             else
                 Alert.alert("Ocorreu um erro. Tente novamente mais tarde");
-        } finally {
-            // Finaliza o carregamento
-            setLoading(false);
         }
     }
 
     return (
-        <View style={styles.container} >
-            {/* Logo */}
-            <View style={styles.containerLogo} >
-                <Image source={icon.logo} style={styles.logo} />
-            </View>
+        <SafeAreaView style={styles.safe}>
+            <KeyboardAwareScrollView style={styles.container}>
+                <View style={styles.header}>
+                    <Image
+                        source={icon.logologin}
+                        style={styles.headerLogo}
+                        alt="Logo" />
 
-            {/* Formulário de Cadastro */}
-            <View>
-                {/* Campo de Nome */}
-                <View style={styles.containerInput} >
-                    <TextInput
-                        placeholder="Nome"
-                        style={styles.input}
-                        onChangeText={(texto) => setName(texto)}
-                    />
+                    <Text style={styles.title}>Criar conta na Agendai</Text>
+                    <Text style={styles.subtitle}>Gerencie suas consultas e reserve quando e onde estiver!</Text>
                 </View>
 
-                {/* Campo de E-mail */}
-                <View style={styles.containerInput} >
-                    <TextInput
-                        placeholder="E-mail"
-                        style={styles.input}
-                        keyboardType="email-address"
-                        onChangeText={(texto) => setEmail(texto)}
-                    />
+                <View style={styles.form}>
+                    <View style={styles.input}>
+                        <Text style={styles.inputLabel}>Nome:</Text>
+
+                        <TextInput
+                            style={styles.inputControl}
+                            placeholder="jhon"
+                            onChangeText={(texto) => setName(texto)}
+                        />
+                    </View>
+
+                    <View style={styles.input}>
+                        <Text style={styles.inputLabel}>E-mail:</Text>
+
+                        <TextInput
+                            style={styles.inputControl}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            placeholder="jhon@example.com"
+                            keyboardType="email-address"
+                            onChangeText={(texto) => setEmail(texto)} 
+                        />
+                    </View>
+
+                    <View style={styles.input}>
+                        <Text style={styles.inputLabel}>Senha:</Text>
+
+                        <View style={styles.passwordContainer}>
+                            <TextInput
+                                style={styles.inputControl}
+                                secureTextEntry={true}
+                                placeholder="*******"
+                                onChangeText={(texto) => setPassword(texto)}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={styles.formAction} >
+                        <TouchableOpacity onPress={ExecuteAccount}>
+                            <View style={styles.btn} >
+                                <Text style={styles.btnText}>
+                                    Criar
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                 </View>
+            </KeyboardAwareScrollView>
 
-                {/* Campo de Senha */}
-                <View style={styles.containerInput} >
-                    <TextInput
-                        placeholder="Senha"
-                        style={styles.input}
-                        secureTextEntry={true}
-                        onChangeText={(texto) => setPassword(texto)}
-                    />
-                </View>
-
-                {/* Botão de Criar Conta */}
-                <Button
-                    text={loading ? "Carregando..." : "Criar Conta"}
-                    onPress={ExecuteAccount}
-                    disabled={loading}
-                />
-            </View>
-
-            {/* Rodapé com link para fazer login */}
-            <View style={styles.footer} >
-                <Text>Já tenho conta. </Text>
-                <TouchableOpacity onPress={() => props.navigation.goBack()}>
-                    <Text style={styles.footerLink}>Fazer login.</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
+            <TouchableOpacity onPress={() => props.navigation.navigate("login")}>
+                <Text style={styles.formFooter}>
+                    Já tenho conta! {''}
+                    <Text style={{ textDecorationLine: 'underline' }}>Fazer login.</Text>
+                </Text>
+            </TouchableOpacity>
+        </SafeAreaView>
     );
 }
 

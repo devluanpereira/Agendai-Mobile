@@ -1,49 +1,100 @@
-import { COLORS, FONT_SIZE } from "../../constants/theme";
-import { Dimensions, StyleSheet } from 'react-native';
+import { COLORS } from "../../constants/theme";
+import { StyleSheet } from 'react-native';
 
-// Pegando a largura da tela
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-
-// Função para escalar tamanhos
-const scale = size => (SCREEN_WIDTH / 375) * size;
 
 export const styles = StyleSheet.create({
-    container: {
-        backgroundColor: COLORS.white,
-        flex: 1,
-        paddingHorizontal: scale(20), // Ajustando o padding horizontalmente
-        paddingVertical: scale(30),   // Ajustando o padding verticalmente
-        justifyContent: "space-between"
-    },
+   safe: {
+    flex: 1,
+    backgroundColor: "#e8ecf4"
+   },
 
-    containerLogo: {
-        alignItems: "center",
-        paddingTop: scale(50) // Adicionei um padding top para distanciar
-    },
+   container:{
+    padding: 24,
+    flex: 1
+   },
 
-    containerInput: {
-        marginBottom: scale(10)  // Escalando o espaçamento inferior entre inputs
-    },
-   
-    logo: {
-        width: scale(130),       // Escalando a largura da logo
-        height: scale(30)        // Escalando a altura da logo
-    },
+   header: {
+    marginVertical: 36,
+   },
 
-    input: {
-        backgroundColor: COLORS.branco1,
-        padding: scale(10),      // Escalando o padding do input
-        borderRadius: 6          // Deixando o borderRadius fixo
-    },
+   headerLogo: {
+    width: 80,
+    height: 80,
+    alignSelf: "center",
+    marginBottom: 36
+   },
 
-    footer: {
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "row"
-    },
+   title: {
+    fontSize: 27,
+    fontWeight: '700',
+    color: COLORS.pretociano,
+    marginBottom: 6,
+    textAlign: "center"
+   },
 
-    footerLink: {
-        color: COLORS.pink,
-        fontSize: FONT_SIZE.md // Mantendo o tamanho da fonte sem escalas
-    }
+   subtitle: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: COLORS.cinza2,
+    textAlign: "center"
+   },
+
+   input: {
+    marginBottom: 16
+   },
+
+   inputLabel: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: '#222',
+    marginBottom: 8
+   },
+
+
+   inputControl: {
+    height: 44,
+    backgroundColor:'#ffffff',
+    paddingHorizontal: 16,
+    borderRadius: 6,
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#222'
+   },
+
+   form: {
+    marginBottom: 24,
+    flex: 1
+   },
+
+   formAction: {
+    marginVertical: 24
+   },
+
+   formFooter: {
+    paddingVertical: 24,
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#222',
+    textAlign: 'center',
+    letterSpacing: 0.15
+   },
+
+   btn: {
+    backgroundColor: '#075eec',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#075eec',
+    flexDirection: "row",
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 20
+   },
+
+   btnText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#fff'
+   }
+
 });

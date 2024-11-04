@@ -5,5 +5,6 @@ import male from "../assets/male.png";
 import female from "../assets/female.png";
 import logo from "../assets/logo2.png";
 import profile from "../assets/profile.png";
+import logologin from "../assets/logologin.png";
 
-export default { home, calendar, clock, male, female, logo, profile }
+export default { home, calendar, clock, male, female, logo, profile, logologin }

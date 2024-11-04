@@ -1,127 +1,110 @@
-import { Alert, Image, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Image, SafeAreaView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import icon from "../../constants/icon";
 import { styles } from "./login.style";
-import Button from "../../components/button/button";
 import api from "../../constants/api";
-import { useContext, useState, useRef } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/auth";
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Importa AsyncStorage
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 function Login(props) {
-
     const { setUser } = useContext(AuthContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [isPasswordVisible, setIsPasswordVisible] = useState(false); // Estado para controlar visibilidade da senha
-    const [loading, setLoading] = useState(false); // Estado de carregamento
-    const passwordInputRef = useRef(null); // Referência para campo de senha
+    const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const showAlert = (message) => Alert.alert(message);
 
-    // Função para executar o login
-    async function ExecuteLogin() {
+    const handleLogin = async () => {
         if (!email || !password) {
-            Alert.alert("Por favor, preencha todos os campos.");
-            return;
+            return showAlert("Por favor, preencha todos os campos.");
         }
-
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-            Alert.alert("Por favor, insira um e-mail válido.");
-            return;
+        if (!isValidEmail(email)) {
+            return showAlert("Por favor, insira um e-mail válido.");
         }
-
-        setLoading(true);
-
         try {
-            const response = await api.post("/users/login", {
-                email,
-                password
-            });
-
-            console.log(response.data); // Verifique a estrutura da resposta aqui
-
-            if (response.data) {
-                const token = response.data.token;
-                console.log("Token recebido:", token); // Veja se o token está correto
-
-                // Verifique se o token não é undefined antes de salvar
-                if (token) {
-                    await AsyncStorage.setItem('authToken', token);
-                    api.defaults.headers.common["Authorization"] = "Bearer " + token;
-                    setUser(response.data);
-                } else {
-                    Alert.alert("Erro: Token não recebido.");
-                }
-            }
-
-        } catch (error) {
-            console.log(error); // Log do erro no console para debug
-
-            if (error.response) {
-                // Se a API retornar um erro específico, exiba a mensagem
-                console.log(error.response.data); // Detalhe do erro da API
-                Alert.alert(error.response.data.error || "Erro desconhecido");
-            } else if (error.request) {
-                // Erro na requisição (sem resposta da API)
-                console.log(error.request); // Log do request para debug
-                Alert.alert("Nenhuma resposta do servidor. Verifique sua conexão.");
+            const response = await api.post("/users/login", { email, password });
+            if (response.data?.token) {
+                await AsyncStorage.setItem('authToken', response.data.token);
+                api.defaults.headers.common["Authorization"] = `Bearer ${response.data.token}`;
+                setUser(response.data);
             } else {
-                // Outro erro durante a configuração da requisição
-                console.log("Erro", error.message); // Log da mensagem do erro
-                Alert.alert("Erro inesperado. Tente novamente.");
+                showAlert("Erro: Token não recebido.");
             }
-        } finally {
-            setLoading(false);
+        } catch (error) {
+            handleError(error);
         }
-    }
+    };
+
+    const handleError = (error) => {
+        if (error.response) {
+            showAlert(error.response.data.error || "Erro desconhecido");
+        } else if (error.request) {
+            showAlert("Nenhuma resposta do servidor. Verifique sua conexão.");
+        } else {
+            showAlert("Erro inesperado. Tente novamente.");
+        }
+    };
 
     return (
-        <View style={styles.container}>
-            {/* Logo */}
-            <View style={styles.containerLogo}>
-                <Image source={icon.logo} style={styles.logo} />
-            </View>
+        <SafeAreaView style={styles.safe}>
+            <KeyboardAwareScrollView style={styles.container}>
+                <View style={styles.header}>
+                    <Image
+                        source={icon.logologin}
+                        style={styles.headerLogo}
+                        alt="Logo" />
 
-            {/* Formulário de Login */}
-            <View>
-                {/* Campo de e-mail */}
-                <View style={styles.containerInput}>
-                    <TextInput
-                        placeholder="E-mail"
-                        style={styles.input}
-                        keyboardType="email-address"
-                        returnKeyType="next"
-                        onSubmitEditing={() => passwordInputRef.current.focus()} // Move para o campo de senha
-                        onChangeText={(texto) => setEmail(texto)}
-                    />
+                    <Text style={styles.title}>Faça login na Agendai</Text>
+                    <Text style={styles.subtitle}>Agende suas consultas onde estiver e na palma da sua mão!</Text>
                 </View>
 
-                {/* Campo de senha com opção de mostrar/ocultar */}
-                <View style={styles.containerInput}>
-                    <TextInput
-                        ref={passwordInputRef} // Referência do campo de senha
-                        placeholder="Senha"
-                        style={styles.input}
-                        secureTextEntry={!isPasswordVisible} // Controle de visibilidade da senha
-                        returnKeyType="done"
-                        onChangeText={(texto) => setPassword(texto)}
-                    />
-                    <TouchableOpacity onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
-                        <Text>{isPasswordVisible ? "Ocultar" : "Mostrar"}</Text>
-                    </TouchableOpacity>
+                <View style={styles.form}>
+                    <View style={styles.input}>
+                        <Text style={styles.inputLabel}>E-mail:</Text>
+
+                        <TextInput
+                            style={styles.inputControl}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            placeholder="jhon@example.com"
+                            keyboardType="email-address"
+                            onChangeText={setEmail}
+                        />
+                    </View>
+
+                    <View style={styles.input}>
+                        <Text style={styles.inputLabel}>Senha:</Text>
+
+                        <View style={styles.passwordContainer}>
+                            <TextInput
+                                style={styles.inputControl}
+                                clearButtonMode="while-editing"
+                                secureTextEntry={true}
+                                placeholder="*******"
+                                onChangeText={setPassword}
+                            />
+                        </View>
+                    </View>
+
+                    <View style={styles.formAction} >
+                        <TouchableOpacity onPress={handleLogin}>
+                            <View style={styles.btn} >
+                                <Text style={styles.btnText}>
+                                    Entrar
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                 </View>
+            </KeyboardAwareScrollView>
 
-                {/* Botão de Acessar */}
-                <Button text={loading ? "Carregando..." : "Acessar"} onPress={ExecuteLogin} disabled={loading} />
-            </View>
-
-            {/* Rodapé com link para criar conta */}
-            <View style={styles.footer}>
-                <Text>Não tenho conta. </Text>
-                <TouchableOpacity onPress={() => props.navigation.navigate("account")}>
-                    <Text style={styles.footerLink}>Criar conta agora!</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
+            <TouchableOpacity onPress={() => props.navigation.navigate("account")}>
+                <Text style={styles.formFooter}>
+                    Não tenho conta! {''}
+                    <Text style={{ textDecorationLine: 'underline' }}>Criar conta.</Text>
+                </Text>
+            </TouchableOpacity>
+        </SafeAreaView>
     );
 }
 

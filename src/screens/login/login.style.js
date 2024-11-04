@@ -1,47 +1,100 @@
-import { COLORS, FONT_SIZE } from "../../constants/theme";
-import { Dimensions, StyleSheet } from 'react-native';
+import { COLORS } from "../../constants/theme";
+import { StyleSheet } from 'react-native';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-
-const scale = size => (SCREEN_WIDTH / 375) * size;
 
 export const styles = StyleSheet.create({
-    container: {
-        backgroundColor: COLORS.white,
-        flex: 1,
-        paddingHorizontal: scale(20),  
-        paddingVertical: scale(30),  
-        justifyContent: "space-between"
-    },
+   safe: {
+    flex: 1,
+    backgroundColor: "#e8ecf4"
+   },
 
-    containerLogo: {
-        alignItems: "center",
-        paddingTop: scale(40)
-    },
+   container:{
+    padding: 24,
+    flex: 1
+   },
 
-    containerInput: {
-        marginBottom: scale(15) 
-    },
+   header: {
+    marginVertical: 36,
+   },
 
-    logo: {
-        width: scale(130), 
-        height: scale(30) 
-    },
+   headerLogo: {
+    width: 80,
+    height: 80,
+    alignSelf: "center",
+    marginBottom: 36
+   },
 
-    input: {
-        backgroundColor: COLORS.branco1,
-        padding: scale(12), 
-        borderRadius: 6     
-    },
+   title: {
+    fontSize: 27,
+    fontWeight: '700',
+    color: COLORS.pretociano,
+    marginBottom: 6,
+    textAlign: "center"
+   },
 
-    footer: {
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "row"
-    },
+   subtitle: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: COLORS.cinza2,
+    textAlign: "center"
+   },
 
-    footerLink: {
-        color: COLORS.pink,
-        fontSize: FONT_SIZE.md
-    }
+   input: {
+    marginBottom: 16
+   },
+
+   inputLabel: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: '#222',
+    marginBottom: 8
+   },
+
+
+   inputControl: {
+    height: 44,
+    backgroundColor:'#ffffff',
+    paddingHorizontal: 16,
+    borderRadius: 6,
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#222'
+   },
+
+   form: {
+    marginBottom: 24,
+    flex: 1
+   },
+
+   formAction: {
+    marginVertical: 24
+   },
+
+   formFooter: {
+    paddingVertical: 24,
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#222',
+    textAlign: 'center',
+    letterSpacing: 0.15
+   },
+
+   btn: {
+    backgroundColor: '#075eec',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#075eec',
+    flexDirection: "row",
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 20
+   },
+
+   btnText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#fff'
+   }
+
 });
