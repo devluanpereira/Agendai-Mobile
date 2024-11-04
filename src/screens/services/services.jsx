@@ -1,4 +1,4 @@
-import { Alert, FlatList, Image, Text, View } from "react-native";
+import { Alert, FlatList, Image, SafeAreaView, Text, View } from "react-native";
 import { styles } from "./services.style.js";
 import icon from "../../constants/icon";
 import Service from "../../components/services/service.jsx";
@@ -41,26 +41,30 @@ function Services(props) {
         LoadServices();
     }, []);
 
-    return <View style={styles.container} >
+    return <SafeAreaView style={styles.safe}>
+        <View style={styles.container} >
 
-        <View style={styles.banner}>
-            <Image source={iconDoctor == "M" ? icon.male : icon.female}/>
-            <Text style={styles.text} >{name}</Text>
-            <Text style={styles.specialty} >{specialty}</Text>
+            <View style={styles.banner}>
+                <Image source={iconDoctor == "M" ? icon.male : icon.female} />
+                <Text style={styles.text} >{name}</Text>
+                <Text style={styles.specialty} >{specialty}</Text>
 
+            </View>
+
+            <FlatList data={doctorsServices}
+                keyExtractor={(serv) => serv.id_service}
+                showsVerticalScrollIndicator={false}
+                renderItem={({ item }) => {
+                    return <Service id_service={item.id_service}
+                        description={item.description}
+                        price={item.price}
+                        onPress={ClickService}
+                    />
+                }} />
         </View>
+    </SafeAreaView>
 
-        <FlatList data={doctorsServices}
-            keyExtractor={(serv) => serv.id_service}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => {
-                return <Service id_service={item.id_service}
-                    description={item.description}
-                    price={item.price}
-                    onPress={ClickService}
-                /> 
-            }} />
-    </View>
+
 }
 
 export default Services;

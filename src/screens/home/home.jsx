@@ -1,4 +1,4 @@
-import { Alert, FlatList, Text, View } from "react-native";
+import { Alert, FlatList, SafeAreaView, Text, View } from "react-native";
 import { styles } from "./home.style";
 import Doctor from "../../components/doctor/doctor";
 import { useEffect, useState } from "react";
@@ -37,20 +37,22 @@ function Home(props) {
         LoadDoctors();
     }, []);
 
-    return <View style={styles.container} >
-        <Text style={styles.text} >Agende os seus serviços agora!</Text>
+    return <SafeAreaView style={styles.safe}>
+        <View style={styles.container} >
+            <Text style={styles.text} >Agende os seus serviços agora!</Text>
 
-        <FlatList data={doctors} keyExtractor={(doc) => doc.id_doctor}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => {
-                return <Doctor id_doctor={item.id_doctor}
-                    name={item.name}
-                    icon={item.icon}
-                    specialty={item.specialty}
-                    onPress={ClickDoctor}
-                />
-            }} />
-    </View>
+            <FlatList data={doctors} keyExtractor={(doc) => doc.id_doctor}
+                showsVerticalScrollIndicator={false}
+                renderItem={({ item }) => {
+                    return <Doctor id_doctor={item.id_doctor}
+                        name={item.name}
+                        icon={item.icon}
+                        specialty={item.specialty}
+                        onPress={ClickDoctor}
+                    />
+                }} />
+        </View>
+    </SafeAreaView>
 }
 
 export default Home;

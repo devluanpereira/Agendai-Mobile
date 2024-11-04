@@ -2,8 +2,13 @@ import { COLORS, FONT_SIZE } from "../../constants/theme";
 
 export const styles = {
 
+    safe: {
+        flex: 1,
+        backgroundColor: "#e8ecf4"
+    },
+
     container: {
-        backgroundColor: COLORS.white,
+        backgroundColor: "#e8ecf4",
         flex: 1,
         padding: 10
     },

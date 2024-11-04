@@ -2,13 +2,16 @@ import { COLORS, FONT_SIZE } from "../../constants/theme";
 
 export const styles = {
 
+    safe: {
+        flex: 1,
+        backgroundColor: "#e8ecf4"
+    },
+
     doctor: {
         backgroundColor: COLORS.white,
         flex: 1,
         padding: 8,
         flexDirection: "row",
-        borderWidth: 1,
-        borderColor: COLORS.pink,
         marginBottom: 3,
         marginTop: 3,
         borderRadius: 6
@@ -26,8 +29,8 @@ export const styles = {
     },
 
     icon: {
-        width: 50,
-        height: 50,
+        width: 40,
+        height: 40,
         marginRight: 8
     }
 
