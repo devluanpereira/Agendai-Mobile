@@ -14,7 +14,7 @@ export const styles = {
     },
 
     text: {
-        fontSize: FONT_SIZE.md,
+        fontSize: FONT_SIZE.lg,
         color: COLORS.cinza1,
         marginBottom: 15,
         marginLeft: 10

@@ -39,7 +39,7 @@ function Home(props) {
 
     return <SafeAreaView style={styles.safe}>
         <View style={styles.container} >
-            <Text style={styles.text} >Agende os seus serviços agora!</Text>
+            <Text style={styles.text} >Agende os seus serviços agora❤️!</Text>
 
             <FlatList data={doctors} keyExtractor={(doc) => doc.id_doctor}
                 showsVerticalScrollIndicator={false}
